@@ -24,7 +24,6 @@
 ```text
 .
 ├── CMakeLists.txt
-├── .gitignore
 ├── Makefile
 ├── README.md
 └── src
