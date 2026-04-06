@@ -43,12 +43,12 @@ std::size_t parseSizeArgument(const std::string& value) {
     std::size_t processed = 0;
     const std::size_t size = std::stoull(value, &processed);
     if (processed != value.size()) {
-        throw std::invalid_argument("Некорректный размер вектора: " + value);
+        throw std::invalid_argument("Invalid vector size: " + value);
     }
     if (size < kMinVectorSize || size > kMaxVectorSize) {
         std::ostringstream stream;
-        stream << "Размер вектора должен быть в диапазоне [" << kMinVectorSize
-               << ", " << kMaxVectorSize << "], получено: " << size;
+        stream << "Vector size must be in range [" << kMinVectorSize << ", "
+               << kMaxVectorSize << "], got: " << size;
         throw std::out_of_range(stream.str());
     }
     return size;
@@ -58,7 +58,7 @@ int parseRepeatsArgument(const std::string& value) {
     std::size_t processed = 0;
     const int repeats = std::stoi(value, &processed);
     if (processed != value.size() || repeats <= 0) {
-        throw std::invalid_argument("Количество повторов должно быть > 0");
+        throw std::invalid_argument("Repeat count must be greater than 0");
     }
     return repeats;
 }
@@ -290,7 +290,7 @@ BenchmarkResult runBenchmark(std::size_t size, int forcedRepeats) {
 
     if (cpuSum != gpuSum) {
         std::ostringstream stream;
-        stream << "Результаты CPU и GPU не совпадают для размера " << size
+        stream << "CPU and GPU results do not match for size " << size
                << ": CPU=" << cpuSum << ", GPU=" << gpuSum;
         throw std::runtime_error(stream.str());
     }
@@ -307,12 +307,11 @@ BenchmarkResult runBenchmark(std::size_t size, int forcedRepeats) {
 
 void printUsage(const char* executableName) {
     std::cout
-        << "Использование:\n"
+        << "Usage:\n"
         << "  " << executableName
         << " [--repeats N] [size1 size2 ...]\n\n"
-        << "Если размеры не указаны, запускается набор экспериментов по "
-           "умолчанию.\n"
-        << "Допустимый диапазон размеров: " << kMinVectorSize << ".."
+        << "If no sizes are provided, the default experiment set is used.\n"
+        << "Allowed size range: " << kMinVectorSize << ".."
         << kMaxVectorSize << '\n';
 }
 
@@ -320,7 +319,7 @@ void printDeviceInfo() {
     int deviceCount = 0;
     CUDA_CHECK(cudaGetDeviceCount(&deviceCount));
     if (deviceCount == 0) {
-        throw std::runtime_error("CUDA-устройство не найдено.");
+        throw std::runtime_error("No CUDA device found.");
     }
 
     cudaDeviceProp properties{};
@@ -328,12 +327,11 @@ void printDeviceInfo() {
     CUDA_CHECK(cudaSetDevice(0));
 
     std::cout << "GPU: " << properties.name << '\n'
-              << "Потоков в блоке: " << kThreadsPerBlock << "\n\n";
+              << "Threads per block: " << kThreadsPerBlock << "\n\n";
 }
 
 void printResults(const std::vector<BenchmarkResult>& results) {
-    std::cout << "| Размер вектора | Повторов | Сумма элементов | CPU, мс | GPU, мс "
-                 "| Ускорение |\n"
+    std::cout << "| Vector size | Repeats | Sum | CPU, ms | GPU, ms | Speedup |\n"
               << "|---------------:|---------:|----------------:|--------:|--------:|"
                  "----------:|\n";
 
@@ -363,7 +361,7 @@ int main(int argc, char** argv) {
             if (argument == "--repeats") {
                 if (index + 1 >= argc) {
                     throw std::invalid_argument(
-                        "После --repeats нужно указать число.");
+                        "A number must follow --repeats.");
                 }
                 forcedRepeats = parseRepeatsArgument(argv[++index]);
                 continue;
@@ -387,7 +385,7 @@ int main(int argc, char** argv) {
         printResults(results);
         return EXIT_SUCCESS;
     } catch (const std::exception& error) {
-        std::cerr << "Ошибка: " << error.what() << '\n';
+        std::cerr << "Error: " << error.what() << '\n';
         return EXIT_FAILURE;
     }
 }
