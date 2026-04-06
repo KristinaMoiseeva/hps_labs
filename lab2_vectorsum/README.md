@@ -23,6 +23,7 @@
 
 ```text
 .
+├── CMakeLists.txt
 ├── .gitignore
 ├── Makefile
 ├── README.md
@@ -97,12 +98,16 @@
 - NVIDIA GPU;
 - установленный CUDA Toolkit;
 - компилятор `nvcc`;
-- `make`.
+- `CMake`;
+- генератор сборки для `CMake`:
+  - на Windows обычно подходит Visual Studio 2022;
+  - либо можно использовать Ninja.
 
-Сборка:
+Сборка через CMake:
 
 ```bash
-make
+cmake -S . -B build
+cmake --build build --config Release
 ```
 
 ## Запуск
@@ -110,19 +115,27 @@ make
 Запуск набора экспериментов по умолчанию:
 
 ```bash
-./vectorsum
+./build/vectorsum
 ```
 
 Запуск с собственными размерами:
 
 ```bash
-./vectorsum 1000 10000 100000 500000 1000000
+./build/vectorsum 1000 10000 100000 500000 1000000
 ```
 
 Запуск с фиксированным числом повторов для каждого размера:
 
 ```bash
-./vectorsum --repeats 100 1000 10000 100000 500000 1000000
+./build/vectorsum --repeats 100 1000 10000 100000 500000 1000000
+```
+
+На Windows в `PowerShell` команды запуска выглядят так:
+
+```powershell
+.\build\vectorsum.exe
+.\build\vectorsum.exe 1000 10000 50000 100000 250000 500000 1000000
+.\build\vectorsum.exe --repeats 100 1000 10000 50000 100000 250000 500000 1000000
 ```
 
 ## Эксперименты
