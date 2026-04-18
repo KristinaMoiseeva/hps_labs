@@ -180,11 +180,13 @@ CPU и GPU. Чтобы быстро проверить корректность 
 
 *Программа выводит информацию о GPU и Markdown-таблицу:*
 
+```
 GPU: NVIDIA GeForce RTX 3060
 SM count: 28
 Warp size: 32
 Threads per block: 256
 Max threads per block: 1024
+```
 
 | Points | Repeats | CPU inside | GPU inside | CPU pi | GPU pi | Abs diff | CPU, ms | GPU total, ms | GPU kernel, ms | Speedup total | Speedup kernel |
 |-------:|--------:|-----------:|-----------:|-------:|-------:|---------:|--------:|--------------:|---------------:|--------------:|---------------:|
