@@ -177,16 +177,18 @@ python scripts\generate_test_bmp.py data\noisy_512.bmp --width 512 --height 512 
 
 ## Формат результата
 
-Программа выводит информацию о GPU и Markdown-таблицу:
+*Программа выводит информацию о GPU и Markdown-таблицу:*
 
-```text
-GPU: NVIDIA ...
-SM count: ...
+```
+GPU: NVIDIA GeForce RTX 3060
+SM count: 28
 CUDA block: 16x16
-Max threads per block: ...
+Max threads per block: 1024
+```
 
 | Input | Size | Repeats | CPU, ms | GPU total, ms | GPU kernel, ms | Speedup total | Speedup kernel | Mismatched pixels | Max abs diff | Output |
-```
+|:------|:-----|--------:|--------:|--------------:|---------------:|--------------:|---------------:|------------------:|-------------:|:-------|
+| data/noisy_256.bmp | 256x256 | 20 | 2.909 | 0.074 | 0.036 | 39.411 | 80.457 | 0 | 0 | filtered.bmp |
 
 Что ожидаем увидеть:
 
