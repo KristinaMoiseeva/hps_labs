@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.18)
+
+project(lab3_pi_monte_carlo LANGUAGES CXX CUDA)
+
+find_package(CUDAToolkit REQUIRED)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CUDA_STANDARD 17)
+set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+
+add_executable(pimontecarlo src/main.cu)
+
+target_compile_options(pimontecarlo PRIVATE
+    $<$<COMPILE_LANGUAGE:CXX>:-O3>
+    $<$<COMPILE_LANGUAGE:CUDA>:-O3>
+)
+
+target_link_libraries(pimontecarlo PRIVATE CUDA::curand)
+
+set_target_properties(pimontecarlo PROPERTIES
+    CUDA_SEPARABLE_COMPILATION ON
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}"
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}"
+    RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}"
+    RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "${CMAKE_BINARY_DIR}"
+)
